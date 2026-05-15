@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 import { supabase } from '../../supabase';
 import { DEFAULT_FINANCE_DATA } from '../../constants';
-import Card from '../ui/Card';
 
 const AuthScreen = () => {
     const [mode, setMode] = useState('login');
@@ -57,36 +56,69 @@ const AuthScreen = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 selection:bg-indigo-500/30">
-            <div className="w-full max-w-md animate-fade-in">
-                <div className="text-center mb-8">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 mx-auto mb-4">
-                        <div className="w-4 h-4 bg-white rounded-full"></div>
+        <div style={{
+            minHeight: '100vh',
+            background: 'var(--bg-base)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 16,
+        }}>
+            <div className="animate-fade-in" style={{ width: '100%', maxWidth: 420 }}>
+                {/* Brand */}
+                <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                    <div style={{
+                        width: 56, height: 56,
+                        borderRadius: 'var(--radius-md)',
+                        background: 'linear-gradient(135deg, var(--primary), #8B5CF6)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        boxShadow: '0 0 40px var(--primary-glow)',
+                        margin: '0 auto 16px',
+                    }}>
+                        <div style={{ width: 18, height: 18, background: '#fff', borderRadius: '50%' }} />
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Zenith Finance</h1>
-                    <p className="text-slate-400">Your personal financial operating system</p>
+                    <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 4 }}>
+                        Zenith Finance
+                    </h1>
+                    <p className="body-sm" style={{ color: 'var(--text-muted)' }}>Your personal financial operating system</p>
                 </div>
 
-                <Card className="p-8 border-slate-800">
-                    <h2 className="text-xl font-semibold text-white mb-6">
+                {/* Card */}
+                <div className="glass-card" style={{ padding: 32 }}>
+                    <h2 style={{ fontSize: 20, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 24 }}>
                         {mode === 'login' ? 'Welcome back' : mode === 'signup' ? 'Create your account' : 'Reset password'}
                     </h2>
 
                     {message.text && (
-                        <div className={`p-3 rounded-lg mb-6 text-sm flex items-start gap-2 ${message.type === 'error' ? 'bg-red-500/10 border border-red-500/20 text-red-400' : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'}`}>
-                            <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                        <div style={{
+                            padding: '10px 14px',
+                            borderRadius: 'var(--radius-sm)',
+                            marginBottom: 20,
+                            fontSize: 13,
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: 8,
+                            background: message.type === 'error' ? 'var(--expense-surface)' : 'var(--income-surface)',
+                            border: `1px solid ${message.type === 'error' ? 'rgba(244,63,94,0.2)' : 'rgba(16,185,129,0.2)'}`,
+                            color: message.type === 'error' ? 'var(--expense)' : 'var(--income)',
+                        }}>
+                            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 1 }} />
                             <span>{message.text}</span>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-3 text-slate-500" size={18} />
+                            <label className="body-sm" style={{ display: 'block', color: 'var(--text-muted)', fontWeight: 500, marginBottom: 6 }}>
+                                Email Address
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <Mail size={18} style={{ position: 'absolute', left: 14, top: 13, color: 'var(--text-muted)' }} />
                                 <input
                                     type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                                    className="input-field"
+                                    style={{ paddingLeft: 42 }}
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -94,35 +126,55 @@ const AuthScreen = () => {
 
                         {mode !== 'forgot' && (
                             <div>
-                                <label className="block text-sm font-medium text-slate-400 mb-1">Password</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-3 text-slate-500" size={18} />
+                                <label className="body-sm" style={{ display: 'block', color: 'var(--text-muted)', fontWeight: 500, marginBottom: 6 }}>
+                                    Password
+                                </label>
+                                <div style={{ position: 'relative' }}>
+                                    <Lock size={18} style={{ position: 'absolute', left: 14, top: 13, color: 'var(--text-muted)' }} />
                                     <input
                                         type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                                        className="input-field"
+                                        style={{ paddingLeft: 42 }}
                                         placeholder="••••••••"
                                     />
                                 </div>
                             </div>
                         )}
 
-                        <button disabled={loading} type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2 mt-6">
+                        <button disabled={loading} type="submit" className="btn-primary" style={{
+                            width: '100%',
+                            marginTop: 8,
+                            padding: '14px 24px',
+                            opacity: loading ? 0.6 : 1,
+                        }}>
                             {loading ? 'Processing...' : (mode === 'login' ? 'Sign In' : mode === 'signup' ? 'Sign Up' : 'Send Reset Link')}
                             {!loading && <ArrowRight size={18} />}
                         </button>
                     </form>
 
-                    <div className="mt-6 pt-6 border-t border-slate-800 text-sm text-center flex flex-col gap-3">
+                    <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid var(--border-subtle)', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 10 }}>
                         {mode === 'login' ? (
                             <>
-                                <button onClick={() => setMode('forgot')} className="text-slate-400 hover:text-indigo-400 transition-colors">Forgot your password?</button>
-                                <p className="text-slate-400">Don't have an account? <button onClick={() => setMode('signup')} className="text-indigo-400 font-medium hover:underline">Sign up</button></p>
+                                <button onClick={() => setMode('forgot')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, transition: 'color 0.2s' }}>
+                                    Forgot your password?
+                                </button>
+                                <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
+                                    Don't have an account?{' '}
+                                    <button onClick={() => setMode('signup')} style={{ background: 'none', border: 'none', color: 'var(--primary-light)', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13 }}>
+                                        Sign up
+                                    </button>
+                                </p>
                             </>
                         ) : (
-                            <p className="text-slate-400">Back to <button onClick={() => setMode('login')} className="text-indigo-400 font-medium hover:underline">Sign in</button></p>
+                            <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
+                                Back to{' '}
+                                <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', color: 'var(--primary-light)', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', fontSize: 13 }}>
+                                    Sign in
+                                </button>
+                            </p>
                         )}
                     </div>
-                </Card>
+                </div>
             </div>
         </div>
     );
