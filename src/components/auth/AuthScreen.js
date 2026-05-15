@@ -21,6 +21,9 @@ const AuthScreen = () => {
                 const { data: authData, error: authError } = await supabase.auth.signUp({
                     email,
                     password,
+                    options: {
+                        emailRedirectTo: window.location.origin,
+                    },
                 });
                 
                 if (authError) throw authError;
@@ -60,7 +63,7 @@ const AuthScreen = () => {
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 mx-auto mb-4">
                         <div className="w-4 h-4 bg-white rounded-full"></div>
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight mb-2">OmniFinance</h1>
+                    <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Zenith Finance</h1>
                     <p className="text-slate-400">Your personal financial operating system</p>
                 </div>
 
