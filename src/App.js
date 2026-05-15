@@ -4,6 +4,7 @@ import {
     LogOut 
 } from 'lucide-react';
 import { supabase } from './supabase';
+import './styles.css';
 
 import AuthScreen from './components/auth/AuthScreen';
 import OverviewHub from './components/dashboard/OverviewHub';
@@ -121,13 +122,13 @@ export default function App() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200 font-sans flex flex-col md:flex-row selection:bg-indigo-500/30">
-            <nav className="md:w-64 bg-slate-900 border-r border-slate-800 p-4 md:p-6 flex flex-col gap-6 md:min-h-screen z-10 shadow-xl">
+        <div className="min-h-screen font-sans flex flex-col md:flex-row selection:bg-indigo-500/30 text-slate-200">
+            <nav className="md:w-64 glass-panel p-4 md:p-6 flex flex-col gap-6 md:min-h-screen z-10">
                 <div className="flex items-center gap-3 px-2 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
                         <div className="w-3 h-3 bg-white rounded-full"></div>
                     </div>
-                    <span className="text-xl font-bold text-white tracking-tight">OmniFinance</span>
+                    <span className="text-xl font-bold text-white tracking-tight">Zenith Finance</span>
                 </div>
 
                 <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible hide-scrollbar flex-1">
@@ -135,8 +136,8 @@ export default function App() {
                         <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap md:whitespace-normal ${activeTab === item.id
-                                    ? 'bg-indigo-500/10 text-indigo-400 font-medium'
+                            className={`flex items-center gap-3 px-4 py-3 rounded-full transition-all whitespace-nowrap md:whitespace-normal ${activeTab === item.id
+                                    ? 'bg-indigo-500/20 text-indigo-400 font-medium'
                                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                                 }`}
                         >

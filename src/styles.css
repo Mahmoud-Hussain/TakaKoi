@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0F172A; /* Deep Slate */
+}
+
+.glass-card {
+  background-color: rgba(30, 41, 59, 0.4); /* slate-800/40 */
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700/50 */
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.glass-panel {
+  background-color: rgba(15, 23, 42, 0.6); /* slate-900/60 */
+  backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(30, 41, 59, 0.5);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

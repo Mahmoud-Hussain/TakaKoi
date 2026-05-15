@@ -4,7 +4,7 @@ import Card from '../ui/Card';
 
 const OverviewHub = ({ data, onConnectBank }) => (
     <div className="space-y-6 animate-fade-in">
-        <div className="bg-indigo-900/40 border border-indigo-500/30 rounded-2xl p-4 flex items-center justify-between">
+        <div className="glass-card bg-indigo-900/20 p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
                 <ShieldAlert className="text-indigo-400" size={24} />
                 <div>
@@ -15,7 +15,7 @@ const OverviewHub = ({ data, onConnectBank }) => (
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-900 border-emerald-500/30">
+            <Card className="bg-emerald-900/10 border-emerald-500/30">
                 <h3 className="text-slate-400 text-sm font-medium">Safe to Spend</h3>
                 <p className="text-4xl font-bold text-white mt-2">${data?.safeToSpend?.toFixed(2) || '0.00'}</p>
                 <p className="text-emerald-400 text-sm mt-2 flex items-center gap-1"><CheckCircle2 size={16} /> All bills covered</p>
@@ -47,9 +47,9 @@ const OverviewHub = ({ data, onConnectBank }) => (
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {data?.upcomingBills?.map(bill => (
-                    <div key={bill.id} className="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 flex items-center justify-between hover:bg-slate-800 transition-colors cursor-pointer">
+                    <div key={bill.id} className="p-3 bg-slate-800/30 rounded-xl border border-slate-700/50 flex items-center justify-between hover:bg-slate-800/60 transition-colors cursor-pointer">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-xl shadow-inner">{bill.icon}</div>
+                            <div className="w-10 h-10 rounded-full bg-slate-900/80 flex items-center justify-center text-xl shadow-inner">{bill.icon}</div>
                             <div>
                                 <p className="text-white font-medium text-sm">{bill.name}</p>
                                 <p className="text-slate-400 text-xs">{bill.date}</p>
@@ -61,7 +61,19 @@ const OverviewHub = ({ data, onConnectBank }) => (
             </div>
         </Card>
 
-        <Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-slate-400 text-sm font-medium">Budget Status</h3>
+                </div>
+                <p className="text-3xl font-bold text-white">$750.00</p>
+                <p className="text-slate-400 text-sm mt-1">Left in your monthly budget</p>
+                <div className="w-full bg-slate-800/50 rounded-full h-2 mt-4">
+                    <div className="bg-indigo-500 h-2 rounded-full" style={{ width: '45%' }}></div>
+                </div>
+            </Card>
+
+            <Card>
             <h3 className="text-slate-400 text-sm font-medium mb-4">Recent Transactions</h3>
             <div className="space-y-3">
                 {data?.transactions?.map(tx => (
@@ -80,6 +92,7 @@ const OverviewHub = ({ data, onConnectBank }) => (
                 ))}
             </div>
         </Card>
+        </div>
     </div>
 );
 

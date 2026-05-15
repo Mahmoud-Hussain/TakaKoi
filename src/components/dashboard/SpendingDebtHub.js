@@ -13,11 +13,11 @@ const SpendingDebtHub = ({ data }) => (
                 <div className="space-y-4">
                     {data?.budgets?.map(b => (
                         <div key={b.id}>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span className="text-white">{b.icon} {b.category}</span>
-                                <span className="text-slate-400">${b.spent} / ${b.limit}</span>
+                            <div className="flex justify-between text-sm mb-2">
+                                <span className="text-white font-medium">{b.icon} {b.category}</span>
+                                <span className="text-slate-400"><span className="text-white">${b.spent}</span> / ${b.limit}</span>
                             </div>
-                            <ProgressBar current={b.spent} max={b.limit} colorClass={b.spent > b.limit * 0.9 ? 'bg-red-500' : 'bg-indigo-500'} />
+                            <ProgressBar current={b.spent} max={b.limit} colorClass={b.spent > b.limit * 0.9 ? 'bg-red-500' : 'bg-emerald-500'} />
                         </div>
                     ))}
                 </div>
@@ -30,7 +30,7 @@ const SpendingDebtHub = ({ data }) => (
                 </div>
                 <div className="space-y-3">
                     {data?.sharedExpenses?.map(exp => (
-                        <div key={exp.id} className="flex justify-between items-center p-3 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition-colors">
+                        <div key={exp.id} className="flex justify-between items-center p-3 rounded-xl bg-slate-800/30 hover:bg-slate-800/60 transition-colors">
                             <div className="flex items-center gap-3">
                                 <span className="text-2xl">{exp.icon}</span>
                                 <div>
@@ -58,7 +58,7 @@ const SpendingDebtHub = ({ data }) => (
                 </div>
                 <div className="space-y-3">
                     {data?.subscriptions?.map(sub => (
-                        <div key={sub.id} className="flex justify-between items-center p-2 rounded-lg bg-slate-800/50">
+                        <div key={sub.id} className="flex justify-between items-center p-3 rounded-xl bg-slate-800/30">
                             <div className="flex items-center gap-3">
                                 <span className="text-xl">{sub.icon}</span>
                                 <div>
@@ -82,7 +82,7 @@ const SpendingDebtHub = ({ data }) => (
                 </div>
                 <div className="space-y-4">
                     {data?.debts?.map(debt => (
-                        <div key={debt.id} className="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                        <div key={debt.id} className="p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
                             <div className="flex justify-between mb-2">
                                 <span className="text-white font-medium flex items-center gap-2">{debt.icon} {debt.name}</span>
                                 <span className="text-orange-400 font-bold">${debt.balance.toLocaleString()}</span>
