@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Bot, ArrowRight } from 'lucide-react';
-import Card from '../ui/Card';
+import { Bot, ArrowRight, Sparkles } from 'lucide-react';
 
 const AIAdvisorHub = () => {
     const [chat, setChat] = useState([
-        { role: 'ai', text: "Hey! I'm your OmniFinance assistant. I can analyze your spending, or give you a reality check. Do you want me to Roast you or Hype you up?" }
+        { role: 'ai', text: "Hey! I'm your Zenith AI assistant. I can analyze your spending, predict trends, or give you a reality check. Do you want me to Roast you or Hype you up?" }
     ]);
     const [input, setInput] = useState('');
 
@@ -25,36 +24,118 @@ const AIAdvisorHub = () => {
     };
 
     return (
-        <Card className="flex flex-col h-[600px]">
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Bot size={20} className="text-indigo-400" /> Omni Assistant</h2>
+        <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            {/* Header */}
+            <div>
+                <h1 className="headline-lg" style={{ color: 'var(--text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <Bot size={28} style={{ color: 'var(--primary-light)' }} />
+                    Zenith AI
+                </h1>
+                <p className="body-sm" style={{ color: 'var(--text-muted)' }}>Your intelligent financial companion</p>
+            </div>
 
-            <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
-                {chat.map((msg, idx) => (
-                    <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.role === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-slate-800 text-slate-200 rounded-bl-sm border border-slate-700'}`}>
-                            {msg.text}
+            {/* Chat Container */}
+            <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: 560, padding: 0 }}>
+                {/* Messages */}
+                <div className="hide-scrollbar" style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 16,
+                }}>
+                    {chat.map((msg, idx) => (
+                        <div key={idx} style={{
+                            display: 'flex',
+                            justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                            animation: 'slide-up 0.3s ease-out',
+                        }}>
+                            <div style={{
+                                maxWidth: '80%',
+                                padding: '12px 16px',
+                                borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                                fontSize: 14,
+                                lineHeight: 1.5,
+                                background: msg.role === 'user'
+                                    ? 'var(--primary)'
+                                    : 'rgba(255,255,255,0.05)',
+                                color: msg.role === 'user'
+                                    ? '#fff'
+                                    : 'var(--text-secondary)',
+                                border: msg.role === 'user'
+                                    ? 'none'
+                                    : '1px solid var(--border-subtle)',
+                            }}>
+                                {msg.text}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
 
-            <div className="flex gap-2 mb-3">
-                <button onClick={() => handleSend("Roast my spending 🔥")} className="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1.5 rounded-full hover:bg-red-500/20 transition-colors">🔥 Roast Me</button>
-                <button onClick={() => handleSend("Hype me up 🚀")} className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full hover:bg-emerald-500/20 transition-colors">🚀 Hype Me</button>
-            </div>
+                {/* Quick Actions */}
+                <div style={{ padding: '0 24px 12px', display: 'flex', gap: 8 }}>
+                    <button onClick={() => handleSend("Roast my spending 🔥")} style={{
+                        fontSize: 12, padding: '6px 14px',
+                        background: 'var(--expense-surface)',
+                        color: 'var(--expense)',
+                        border: '1px solid rgba(244,63,94,0.2)',
+                        borderRadius: 'var(--radius-pill)',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.2s ease',
+                    }}>
+                        🔥 Roast Me
+                    </button>
+                    <button onClick={() => handleSend("Hype me up 🚀")} style={{
+                        fontSize: 12, padding: '6px 14px',
+                        background: 'var(--income-surface)',
+                        color: 'var(--income)',
+                        border: '1px solid rgba(16,185,129,0.2)',
+                        borderRadius: 'var(--radius-pill)',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.2s ease',
+                    }}>
+                        🚀 Hype Me
+                    </button>
+                    <button onClick={() => handleSend("Give me a savings tip")} style={{
+                        fontSize: 12, padding: '6px 14px',
+                        background: 'var(--primary-surface)',
+                        color: 'var(--primary-light)',
+                        border: '1px solid rgba(79,70,229,0.2)',
+                        borderRadius: 'var(--radius-pill)',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.2s ease',
+                    }}>
+                        <Sparkles size={12} style={{ display: 'inline', marginRight: 4 }} />
+                        Savings Tip
+                    </button>
+                </div>
 
-            <div className="flex gap-2">
-                <input
-                    type="text" value={input} onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder="Ask about your finances..."
-                    className="flex-1 bg-slate-950 border border-slate-800 text-white rounded-xl py-2 px-4 focus:outline-none focus:border-indigo-500 text-sm"
-                />
-                <button onClick={() => handleSend()} className="bg-indigo-600 hover:bg-indigo-500 text-white p-2 rounded-xl transition-colors">
-                    <ArrowRight size={20} />
-                </button>
+                {/* Input */}
+                <div style={{
+                    padding: '12px 24px 20px',
+                    borderTop: '1px solid var(--border-subtle)',
+                    display: 'flex',
+                    gap: 10,
+                }}>
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                        placeholder="Ask about your finances..."
+                        className="input-field"
+                        style={{ flex: 1 }}
+                    />
+                    <button onClick={() => handleSend()} className="btn-primary" style={{ padding: '10px 14px' }}>
+                        <ArrowRight size={18} />
+                    </button>
+                </div>
             </div>
-        </Card>
+        </div>
     );
 };
 
