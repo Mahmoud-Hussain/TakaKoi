@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    LayoutDashboard, Wallet, LineChart as TrendIcon, Sparkles, Bot, 
-    LogOut 
+    Home, Receipt, Wallet, BarChart3, 
+    LogOut, Sparkles, Bot, Settings,
+    Menu, X
 } from 'lucide-react';
 import { supabase } from './supabase';
 import './styles.css';
 
 import AuthScreen from './components/auth/AuthScreen';
 import OverviewHub from './components/dashboard/OverviewHub';
-import SpendingDebtHub from './components/dashboard/SpendingDebtHub';
-import WealthGrowthHub from './components/dashboard/WealthGrowthHub';
+import TransactionsHub from './components/dashboard/TransactionsHub';
+import BudgetHub from './components/dashboard/BudgetHub';
+import AnalyticsHub from './components/dashboard/AnalyticsHub';
 import PowerToolsHub from './components/dashboard/PowerToolsHub';
 import AIAdvisorHub from './components/dashboard/AIAdvisorHub';
 
 export default function App() {
-    const [activeTab, setActiveTab] = useState('overview');
+    const [activeTab, setActiveTab] = useState('home');
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [financeData, setFinanceData] = useState(null);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [showAIChat, setShowAIChat] = useState(false);
 
     // Initialize Supabase Auth
     useEffect(() => {
@@ -99,72 +103,228 @@ export default function App() {
         await supabase.auth.signOut();
     };
 
-    if (loading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-indigo-500">Loading OmniFinance...</div>;
+    if (loading) {
+        return (
+            <div style={{
+                minHeight: '100vh',
+                background: 'var(--bg-base)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                gap: '16px'
+            }}>
+                <div style={{
+                    width: 48, height: 48,
+                    borderRadius: 'var(--radius-md)',
+                    background: 'linear-gradient(135deg, var(--primary), #8B5CF6)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 0 30px var(--primary-glow)',
+                    animation: 'pulse-soft 1.5s ease-in-out infinite'
+                }}>
+                    <div style={{ width: 16, height: 16, background: '#fff', borderRadius: '50%' }} />
+                </div>
+                <span style={{ color: 'var(--text-secondary)', fontSize: 14, fontWeight: 500 }}>Loading Zenith...</span>
+            </div>
+        );
+    }
+
     if (!user) return <AuthScreen />;
 
     const NAV_ITEMS = [
-        { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-        { id: 'spending', label: 'Spending & Debt', icon: Wallet },
-        { id: 'wealth', label: 'Wealth & Growth', icon: TrendIcon },
+        { id: 'home', label: 'Home', icon: Home },
+        { id: 'transactions', label: 'Transactions', icon: Receipt },
+        { id: 'budget', label: 'Budget', icon: Wallet },
+        { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    ];
+
+    const SECONDARY_NAV = [
         { id: 'tools', label: 'Power Tools', icon: Sparkles },
         { id: 'ai', label: 'AI Advisor', icon: Bot },
     ];
 
     const renderContent = () => {
         switch (activeTab) {
-            case 'overview': return <OverviewHub data={financeData} onConnectBank={handleConnectBank} />;
-            case 'spending': return <SpendingDebtHub data={financeData} />;
-            case 'wealth': return <WealthGrowthHub data={financeData} />;
+            case 'home': return <OverviewHub data={financeData} onConnectBank={handleConnectBank} user={user} />;
+            case 'transactions': return <TransactionsHub data={financeData} />;
+            case 'budget': return <BudgetHub data={financeData} />;
+            case 'analytics': return <AnalyticsHub data={financeData} />;
             case 'tools': return <PowerToolsHub data={financeData} />;
             case 'ai': return <AIAdvisorHub />;
-            default: return <OverviewHub data={financeData} onConnectBank={handleConnectBank} />;
+            default: return <OverviewHub data={financeData} onConnectBank={handleConnectBank} user={user} />;
         }
     };
 
     return (
-        <div className="min-h-screen font-sans flex flex-col md:flex-row selection:bg-indigo-500/30 text-slate-200">
-            <nav className="md:w-64 glass-panel p-4 md:p-6 flex flex-col gap-6 md:min-h-screen z-10">
-                <div className="flex items-center gap-3 px-2 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                        <div className="w-3 h-3 bg-white rounded-full"></div>
+        <div style={{ minHeight: '100vh', fontFamily: "'Inter', sans-serif", display: 'flex' }}>
+            {/* Desktop Sidebar */}
+            <nav className="glass-panel" style={{
+                width: 260,
+                padding: '24px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                minHeight: '100vh',
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                zIndex: 40,
+            }}
+            id="desktop-sidebar"
+            >
+                {/* Brand */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0 12px', marginBottom: 24 }}>
+                    <div style={{
+                        width: 36, height: 36,
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'linear-gradient(135deg, var(--primary), #8B5CF6)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        boxShadow: '0 0 20px var(--primary-glow)',
+                    }}>
+                        <div style={{ width: 12, height: 12, background: '#fff', borderRadius: '50%' }} />
                     </div>
-                    <span className="text-xl font-bold text-white tracking-tight">Zenith Finance</span>
+                    <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>Zenith</span>
                 </div>
 
-                <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible hide-scrollbar flex-1">
+                {/* Primary Nav */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <div style={{ padding: '0 12px', marginBottom: 8 }}>
+                        <span className="label-caps" style={{ color: 'var(--text-muted)' }}>Main</span>
+                    </div>
                     {NAV_ITEMS.map(item => (
                         <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-full transition-all whitespace-nowrap md:whitespace-normal ${activeTab === item.id
-                                    ? 'bg-indigo-500/20 text-indigo-400 font-medium'
-                                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                                }`}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 12,
+                                padding: '10px 12px',
+                                borderRadius: 'var(--radius-sm)',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                background: activeTab === item.id ? 'var(--primary-glow)' : 'transparent',
+                                color: activeTab === item.id ? 'var(--primary-light)' : 'var(--text-secondary)',
+                                fontWeight: activeTab === item.id ? 600 : 400,
+                                fontSize: 14,
+                                fontFamily: 'inherit',
+                                width: '100%',
+                                textAlign: 'left',
+                            }}
                         >
-                            <item.icon size={20} className={activeTab === item.id ? 'stroke-[2.5px]' : ''} />
+                            <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 1.8} />
                             {item.label}
                         </button>
                     ))}
                 </div>
 
-                <div className="mt-auto hidden md:block pt-6 border-t border-slate-800">
-                    <div className="flex items-center justify-between px-2">
-                        <div className="text-sm truncate pr-2">
-                            <p className="text-white font-medium truncate">{user.email}</p>
-                            <p className="text-slate-500 text-xs">Supabase Synced</p>
+                {/* Secondary Nav */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 16 }}>
+                    <div style={{ padding: '0 12px', marginBottom: 8 }}>
+                        <span className="label-caps" style={{ color: 'var(--text-muted)' }}>Tools</span>
+                    </div>
+                    {SECONDARY_NAV.map(item => (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id)}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 12,
+                                padding: '10px 12px',
+                                borderRadius: 'var(--radius-sm)',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                background: activeTab === item.id ? 'var(--primary-glow)' : 'transparent',
+                                color: activeTab === item.id ? 'var(--primary-light)' : 'var(--text-secondary)',
+                                fontWeight: activeTab === item.id ? 600 : 400,
+                                fontSize: 14,
+                                fontFamily: 'inherit',
+                                width: '100%',
+                                textAlign: 'left',
+                            }}
+                        >
+                            <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 1.8} />
+                            {item.label}
+                        </button>
+                    ))}
+                </div>
+
+                {/* User Section */}
+                <div style={{
+                    marginTop: 'auto',
+                    paddingTop: 16,
+                    borderTop: '1px solid var(--border-subtle)',
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 8px' }}>
+                        <div style={{ minWidth: 0 }}>
+                            <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</p>
+                            <p style={{ color: 'var(--text-muted)', fontSize: 11 }}>Synced with Supabase</p>
                         </div>
-                        <button onClick={handleLogout} className="text-slate-400 hover:text-red-400 p-2 rounded-lg hover:bg-slate-800 transition-colors" title="Log Out">
-                            <LogOut size={20} />
+                        <button
+                            onClick={handleLogout}
+                            title="Log Out"
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: 'var(--text-muted)',
+                                cursor: 'pointer',
+                                padding: 8,
+                                borderRadius: 'var(--radius-sm)',
+                                transition: 'all 0.2s ease',
+                                flexShrink: 0,
+                            }}
+                            onMouseEnter={e => { e.target.style.color = 'var(--expense)'; e.target.style.background = 'var(--expense-surface)'; }}
+                            onMouseLeave={e => { e.target.style.color = 'var(--text-muted)'; e.target.style.background = 'transparent'; }}
+                        >
+                            <LogOut size={18} />
                         </button>
                     </div>
                 </div>
             </nav>
 
-            <main className="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto h-screen">
-                <div className="max-w-6xl mx-auto">
+            {/* Main Content */}
+            <main style={{
+                flex: 1,
+                marginLeft: 260,
+                padding: '32px 40px',
+                minHeight: '100vh',
+                overflowY: 'auto',
+                paddingBottom: 100,
+            }}
+            id="main-content"
+            >
+                <div style={{ maxWidth: 960, margin: '0 auto' }}>
                     {renderContent()}
                 </div>
             </main>
+
+            {/* Mobile Bottom Tab Bar */}
+            <div className="bottom-tabs" id="mobile-tabs" style={{ display: 'none' }}>
+                {NAV_ITEMS.map(item => (
+                    <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`tab-item ${activeTab === item.id ? 'active' : ''}`}
+                    >
+                        <span className="tab-icon-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <item.icon size={22} strokeWidth={activeTab === item.id ? 2.5 : 1.8} />
+                        </span>
+                        <span>{item.label}</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Responsive styles */}
+            <style>{`
+                @media (max-width: 768px) {
+                    #desktop-sidebar { display: none !important; }
+                    #main-content { margin-left: 0 !important; padding: 20px 16px 100px !important; }
+                    #mobile-tabs { display: flex !important; }
+                }
+            `}</style>
         </div>
     );
 }
